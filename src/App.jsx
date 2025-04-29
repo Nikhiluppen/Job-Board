@@ -17,11 +17,9 @@ const App = () => {
     <Router>
       <Layout>
         <Routes>    
-              {/* <Route path="/" element={<SignUp />} /> */}
-        {/* <Route path="/signup" element={<SignUp />} /> */}
-        <Route path="/home" element={<Home />} />
-
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<SignUp />} />
+          
+          <Route path="/home" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/jobs" element={<JobSearch />} />
           <Route path="/apply/:jobId" element={<ApplyJob />} />
@@ -30,14 +28,11 @@ const App = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/categories/:category" element={<CategoryPage />} />
 
-          <Route path="/categories/:category" element={<CategoryPage />} />
-          
-          <Route path="*" element={<h1>404 - Page Not Found in the </h1>} />
+          <Route path="*" element={<h1>404 - Page Not Found</h1>} />
         </Routes>
       </Layout>
     </Router>
   );
 };
-
 
 export default App;

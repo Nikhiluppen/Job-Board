@@ -1,7 +1,6 @@
 // Layout.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import './Layout.css';
 
 const Layout = ({ children }) => {
   return (
@@ -9,7 +8,7 @@ const Layout = ({ children }) => {
       <nav className="navbar">
         <div className="logo">JobBoard</div>
         <ul className="nav-links">
-          <li><Link to="/">Home</Link></li>
+          <li><Link to="/home">Home</Link></li>
           <li><Link to="/dashboard">Dashboard</Link></li>
           <li><Link to="/jobs">Jobs</Link></li>
           <li><Link to="/saved-jobs">Saved Jobs</Link></li>

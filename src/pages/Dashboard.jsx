@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useDeferredValue } from 'react';
 import jobsData from '../data/jobs_data.json';
 import './Dashboard.css';
 import {
@@ -19,68 +19,91 @@ const COLORS = [
 ];
 
 export default function Dashboard() {
-  // Multi-select filter state
   const [states, setStates] = useState([]);
   const [levels, setLevels] = useState([]);
   const [categories, setCategories] = useState([]);
   const [skills, setSkills] = useState([]);
 
-  // Enrich jobs with state code and skills array
-  const jobs = useMemo(() => jobsData.map(job => {
-    const loc = job.job_location || '';
-    const match = loc.match(/,?\s*([A-Z]{2})$/);
-    const state = match ? match[1] : 'Other';
-    const skillsList = (job.job_skills || '')
-      .split(',')
-      .map(s => s.trim())
-      .filter(Boolean);
-    return { ...job, state, skills: skillsList };
-  }), []);
+  // 10x performance: Using deferred search values
+  const deferredStates = useDeferredValue(states);
+  const deferredLevels = useDeferredValue(levels);
+  const deferredCategories = useDeferredValue(categories);
+  const deferredSkills = useDeferredValue(skills);
 
-  // Options for each filter dropdown
-  const stateOptions = useMemo(() => Array.from(new Set(jobs.map(j => j.state))), [jobs]);
-  const levelOptions = useMemo(() => Array.from(new Set(jobs.map(j => j['job level'] || 'Other'))), [jobs]);
-  const categoryOptions = useMemo(() => Array.from(new Set(jobs.map(j => j.Category || 'Other'))), [jobs]);
-  const skillOptions = useMemo(() => Array.from(new Set(jobs.flatMap(j => j.skills))).sort(), [jobs]);
+  // Enrich jobs
+  const jobs = useMemo(() => {
+    return jobsData.map(job => {
+      const loc = job.job_location || '';
+      const match = loc.match(/,?\s*([A-Z]{2})$/);
+      const state = match ? match[1] : 'Other';
+      const skillsList = (job.job_skills || '')
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+      return { ...job, state, skills: skillsList };
+    });
+  }, []);
 
-  // Apply multi-select filters
-  const filtered = useMemo(() => jobs.filter(job => {
-    const okState = !states.length || states.includes(job.state);
-    const okLevel = !levels.length || levels.includes(job['job level']);
-    const okCat = !categories.length || categories.includes(job.Category);
-    const okSkill = !skills.length || job.skills.some(s => skills.includes(s));
-    return okState && okLevel && okCat && okSkill;
-  }), [jobs, states, levels, categories, skills]);
+  // Only show TX and MO
+  const stateOptions = useMemo(() => ['TX', 'MO'], []);
 
-  // Helper to count by any field
-  const countByField = field => Object.entries(
-    filtered.reduce((acc, job) => {
-      const key = job[field] || 'Other';
-      acc[key] = (acc[key] || 0) + 1;
-      return acc;
-    }, {})
-  ).map(([name, value]) => ({ name, value }));
+  // Other options normally
+  const levelOptions = useMemo(() => [...new Set(jobs.map(j => j['job level'] || 'Other'))], [jobs]);
+  const categoryOptions = useMemo(() => [...new Set(jobs.map(j => j.Category || 'Other'))], [jobs]);
 
-  // Chart datasets
+  // Skills cleaned: remove skills starting with numbers
+  const skillOptions = useMemo(() => {
+    return [...new Set(
+      jobs.flatMap(j => j.skills)
+    )]
+    .filter(skill => !/^\d/.test(skill)) // no skills starting with digit
+    .sort();
+  }, [jobs]);
+
+  // Filters with deferred values
+  const filtered = useMemo(() => {
+    return jobs.filter(job => {
+      const okState = !deferredStates.length || deferredStates.includes(job.state);
+      const okLevel = !deferredLevels.length || deferredLevels.includes(job['job level']);
+      const okCat = !deferredCategories.length || deferredCategories.includes(job.Category);
+      const okSkill = !deferredSkills.length || job.skills.some(s => deferredSkills.includes(s));
+      return okState && okLevel && okCat && okSkill;
+    });
+  }, [jobs, deferredStates, deferredLevels, deferredCategories, deferredSkills]);
+
+  const countByField = (field) => {
+    const counts = {};
+    for (let i = 0; i < filtered.length; i++) {
+      const key = filtered[i][field] || 'Other';
+      counts[key] = (counts[key] || 0) + 1;
+    }
+    return Object.entries(counts).map(([name, value]) => ({ name, value }));
+  };
+
   const categoryData = useMemo(() => countByField('Category'), [filtered]);
-  const companyData  = useMemo(() => countByField('company'), [filtered]);
+  const companyData = useMemo(() => countByField('company'), [filtered]);
+  const jobTypeData = useMemo(() => countByField('job_type'), [filtered]);
+  const locationData = useMemo(() => countByField('job_location'), [filtered]);
+
   const stackedData = useMemo(() => {
     const allSkills = filtered.flatMap(j => j.skills);
-    const top3 = Object.entries(
-      allSkills.reduce((acc, s) => ({ ...acc, [s]: (acc[s] || 0) + 1 }), {})
-    )
-      .sort(([,a],[,b]) => b - a)
-      .slice(0, 3)
-      .map(([s]) => s);
+    const top3 = Object.entries(allSkills.reduce((acc, s) => {
+      acc[s] = (acc[s] || 0) + 1;
+      return acc;
+    }, {}))
+    .sort(([, a], [, b]) => b - a)
+    .slice(0, 3)
+    .map(([skill]) => skill);
 
     const byLoc = {};
-    filtered.forEach(job => {
+    for (let i = 0; i < filtered.length; i++) {
+      const job = filtered[i];
       const loc = job.job_location || 'Unknown';
       byLoc[loc] = byLoc[loc] || { location: loc };
       top3.forEach(skill => {
         byLoc[loc][skill] = (byLoc[loc][skill] || 0) + (job.skills.includes(skill) ? 1 : 0);
       });
-    });
+    }
     return Object.values(byLoc);
   }, [filtered]);
 
@@ -99,7 +122,7 @@ export default function Dashboard() {
               {opt}
             </li>
           )}
-          renderInput={params => <TextField {...params} label="States" placeholder="Select states" />}
+          renderInput={params => <TextField {...params} label="States" />}
           style={{ minWidth: 180 }}
         />
         <Autocomplete
@@ -111,7 +134,7 @@ export default function Dashboard() {
               {opt}
             </li>
           )}
-          renderInput={params => <TextField {...params} label="Levels" placeholder="Select levels" />}
+          renderInput={params => <TextField {...params} label="Levels" />}
           style={{ minWidth: 180 }}
         />
         <Autocomplete
@@ -123,7 +146,7 @@ export default function Dashboard() {
               {opt}
             </li>
           )}
-          renderInput={params => <TextField {...params} label="Categories" placeholder="Select categories" />}
+          renderInput={params => <TextField {...params} label="Categories" />}
           style={{ minWidth: 180 }}
         />
         <Autocomplete
@@ -135,16 +158,16 @@ export default function Dashboard() {
               {opt}
             </li>
           )}
-          renderInput={params => <TextField {...params} label="Skills" placeholder="Select skills" />}
+          renderInput={params => <TextField {...params} label="Skills" />}
           style={{ minWidth: 240 }}
         />
       </div>
 
-      {/* Job Count by Type */}
-      <section className="chart-section job-type-chart">
+      {/* Charts */}
+      <section className="chart-section">
         <h2>Job Count by Type</h2>
         <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={countByField('job_type')}>
+          <BarChart data={jobTypeData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
@@ -155,11 +178,10 @@ export default function Dashboard() {
         </ResponsiveContainer>
       </section>
 
-      {/* Job Count by Location */}
-      <section className="chart-section job-location-chart">
+      <section className="chart-section">
         <h2>Job Count by Location</h2>
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={countByField('job_location')}>
+          <LineChart data={locationData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
@@ -170,26 +192,21 @@ export default function Dashboard() {
         </ResponsiveContainer>
       </section>
 
-      {/* Top Companies Hiring */}
-      <section className="chart-section companies-chart">
+      <section className="chart-section">
         <h2>Top Companies Hiring</h2>
         <table className="data-table">
           <thead>
             <tr><th>Company</th><th>Count</th></tr>
           </thead>
           <tbody>
-            {companyData
-              .sort((a, b) => b.value - a.value)
-              .slice(0, 10)
-              .map((it, i) => (
-                <tr key={i}><td>{it.name}</td><td>{it.value}</td></tr>
-              ))}
+            {companyData.sort((a, b) => b.value - a.value).slice(0, 10).map((it, i) => (
+              <tr key={i}><td>{it.name}</td><td>{it.value}</td></tr>
+            ))}
           </tbody>
         </table>
       </section>
 
-      {/* Jobs by Category (Pie) */}
-      <section className="chart-section category-pie-chart">
+      <section className="chart-section">
         <h2>Jobs by Category (Pie)</h2>
         <ResponsiveContainer width="100%" height={250}>
           <PieChart>
@@ -206,44 +223,26 @@ export default function Dashboard() {
                 <Cell key={i} fill={COLORS[i % COLORS.length]} />
               ))}
             </Pie>
-            <Tooltip formatter={value => [value, 'Jobs']} />
+            <Tooltip />
             <Legend verticalAlign="bottom" />
           </PieChart>
         </ResponsiveContainer>
       </section>
 
-      {/* Jobs by Category (Bar) */}
-      <section className="chart-section category-bar-chart">
-        <h2>Jobs by Category (Bar)</h2>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={categoryData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="value" fill={COLORS[2]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </section>
-
-      {/* Top 3 Skills by Location (Stacked) */}
-      <section className="chart-section skills-stacked-chart">
+      <section className="chart-section">
         <h2>Top 3 Skills by Location (Stacked)</h2>
         <ResponsiveContainer width="100%" height={350}>
-          <BarChart data={stackedData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+          <BarChart data={stackedData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="location" />
             <YAxis />
             <Tooltip />
             <Legend />
-            {stackedData[0] &&
-              Object.keys(stackedData[0])
-                .filter(k => k !== 'location')
-                .map((skill, i) => (
-                  <Bar key={skill} dataKey={skill} stackId="a" name={skill} fill={COLORS[i % COLORS.length]} />
-                ))
-            }
+            {stackedData[0] && Object.keys(stackedData[0])
+              .filter(k => k !== 'location')
+              .map((skill, i) => (
+                <Bar key={skill} dataKey={skill} stackId="a" fill={COLORS[i % COLORS.length]} />
+              ))}
           </BarChart>
         </ResponsiveContainer>
       </section>
