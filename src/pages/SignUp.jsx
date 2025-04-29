@@ -148,14 +148,7 @@ export default function SignUp() {
 
           <Divider>or sign up with</Divider>
 
-          <Stack spacing={1}>
-            <Button fullWidth variant="outlined" startIcon={<GoogleIcon />} onClick={() => alert('Sign up with Google')}>
-              Google
-            </Button>
-            <Button fullWidth variant="outlined" startIcon={<FacebookIcon />} onClick={() => alert('Sign up with Facebook')}>
-              Facebook
-            </Button>
-          </Stack>
+          
 
           <Typography textAlign="center" mt={2}>
             Already have an account?{' '}
