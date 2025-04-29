@@ -16,12 +16,17 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const testimonials = [
   {
-    name: "Alex Carey",
+    name: "Nikhil",
     image: user1,
     text: "This platform helped me land my dream job faster than I imagined!"
   },
   {
-    name: "John Doe",
+    name: "Sathwika",
+    image: user2,
+    text: "The skill-based matching was a game changer for my job hunt!"
+  },
+  {
+    name: "SaiTeja",
     image: user2,
     text: "The skill-based matching was a game changer for my job hunt!"
   },
@@ -29,7 +34,12 @@ const testimonials = [
     name: "Rachana Balasani",
     image: user3,
     text: "I highly recommend this platform to all freshers looking for jobs."
-  }
+  },
+  {
+    name: "Pavan",
+    image: user2,
+    text: "The skill-based matching was a game changer for my job hunt!"
+  },
 ];
 
 const Home = () => {
