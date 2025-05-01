@@ -43,6 +43,6 @@ const JobDetail = () => {
     </div>
   );
 };
-// EDWDQDQD\
+
 
 export default JobDetail;

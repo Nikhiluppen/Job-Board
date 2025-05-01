@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import jobsData from '../data/jobs_data.json'; // Ensure your JSON uses keys like "Category", "job_title", etc.
 
 const CategoryPage = () => {
-  // Retrieve the "category" parameter from the URL
+  // Retrieve the "category" parameter from the URLjb h.uhhghugl,
   const { category } = useParams();
 
   // Normalize the URL parameter: convert hyphens to spaces, trim, and convert to lowercase.

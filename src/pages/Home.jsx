@@ -21,6 +21,11 @@ const testimonials = [
     text: "This platform helped me land my dream job faster than I imagined!"
   },
   {
+    name: "Nikhil",
+    image: user1,
+    text: "This platform helped me land my dream job faster than I imagined!"
+  },
+  {
     name: "Sathwika",
     image: user2,
     text: "The skill-based matching was a game changer for my job hunt!"
