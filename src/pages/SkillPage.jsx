@@ -7,7 +7,7 @@ const SkillPage = () => {
   return (
     <div className="container">
       <h2>Jobs for {skillName.replace("-", " ")}</h2>
-      <p>Displaying jobs related to skill{skillName.replace("-", " ")}...</p>
+      <p>Displaying jobs that related to skill{skillName.replace("-", " ")}...</p>
     </div>
   );
 };

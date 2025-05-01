@@ -26,5 +26,6 @@ const JobBoard = ({ jobs }) => {
     </div>
   );
 };
-// dfdfs
+
+
 export default JobBoard;

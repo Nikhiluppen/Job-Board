@@ -9,7 +9,7 @@ const SavedJobs = () => {
   }, []);
 
   const handleDelete = (index) => {
-    // Remove the job at the given index from state only
+    // Remove the job at the given index from state only jbjkhgvgvyukutt6kv kffk
     setSavedJobs(jobs => jobs.filter((_, i) => i !== index));
   };
 
