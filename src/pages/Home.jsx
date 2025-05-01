@@ -198,7 +198,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* {/* Create Profile Form */} */}
+      {/* {/* Create Profile Form */} */
       <section className="create-profile">
         <h2>Create Your Profile</h2>
         <p>Tell us your skills and get instant job matches.</p>

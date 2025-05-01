@@ -9,11 +9,8 @@ const SavedJobs = () => {
   }, []);
 
   const handleDelete = (index) => {
-    // Remove the job at the given index
-    const updated = [...savedJobs];
-    updated.splice(index, 1);
-    setSavedJobs(updated);
-    localStorage.setItem('savedJobs', JSON.stringify(updated));
+    // Remove the job at the given index from state only
+    setSavedJobs(jobs => jobs.filter((_, i) => i !== index));
   };
 
   return (
@@ -41,10 +38,19 @@ const SavedJobs = () => {
             </div>
             <button
               onClick={() => handleDelete(index)}
-              className="text-red-600 hover:text-red-800 ml-4"
-            >
-              Delete
-            </button>
+              className="
+                 bg-red-500 hover:bg-red-600     /* background color */
+                 text-white                        /* text color */
+                text-lg                           /* font size */
+                  font-semibold                     /* font weight */
+                  py-2 px-4                         /* vertical/horizontal padding */
+                  rounded                           /* rounded corners */
+                  ml-4                              
+                                   "
+                                      >
+                              Delete
+                            </button>
+
           </div>
         ))
       ) : (
