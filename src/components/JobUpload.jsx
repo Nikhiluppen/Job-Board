@@ -18,7 +18,7 @@ const JobUpload = ({ onJobsParsed }) => {
         complete: (result) => {
           onJobsParsed(result.data); // Send parsed jobs to App.jsx
         },
-        header: true, // Ensures CSV headers are read correctly
+        header: true, // Ensures CSV headers are read correctly qeqweqwqweqwq 
       });
     }
   };
