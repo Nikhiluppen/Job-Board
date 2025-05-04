@@ -32,4 +32,4 @@ const SearchBar = ({ onSearch }) => {
 };
 
 export default SearchBar;
-// dqwAwdqwdSF QDFVWFNSH;DSFUIS.FGesfjb,sjchsklducsydfsdfbsdsdnsdiksdjhfid;lkcnsdc nsdjsdnc;sjasvsd voiddf sdhsdcs;audaa
+// dqwAwdqwdSF QDFVWFNSH;DSFUIS.FGesfjb,hgljgyglyuyf;lkcnsdc nsdjsdnc;sjasvsd voiddf sdhsdcs;audaa

@@ -14,7 +14,7 @@ const JobListings = () => {
     { id: 5, title: "UI/UX Designer", company: "Apple", location: "Los Angeles, CA" },
   ];
 
-  // Filter jobs based on search term dqwdqwdfqd
+  // Filter jobs based on search term dqwdqwdfqd dqwdwWQDQWD
   const filteredJobs = jobs.filter((job) =>
     job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
     job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
