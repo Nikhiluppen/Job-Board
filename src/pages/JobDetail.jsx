@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import jobsData from '../data/jobs_data.json';
 
-const JobDetail = () => {
+function JobDetail() {
   const { jobId } = useParams();
   const job = jobsData[jobId];
 
@@ -42,7 +42,6 @@ const JobDetail = () => {
       </div>
     </div>
   );
-};
-
+}
 
 export default JobDetail;
