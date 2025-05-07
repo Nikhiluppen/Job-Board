@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+///saved jobs helps to apply jobs later
 const SavedJobs = () => {
   const [savedJobs, setSavedJobs] = useState([]);
 

@@ -167,6 +167,12 @@ Full API docs (endpoints, request/response schemas) are available via Postman:
 5. Open a Pull Request
 
 ---
+## Credits
+
+1. Kaggle
+2. LinkedIn
+
+---
 
 ## ⚖️ License
 
