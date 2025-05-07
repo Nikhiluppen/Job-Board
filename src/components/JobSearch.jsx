@@ -142,5 +142,3 @@ const JobSearch = () => {
 };
 
 export default JobSearch;
-// eqwewdfwdqwdqd fewfv few wdqqwdqwdq   qwdqwds  qsq s 
-// s qs  qs  qs  qs s qs  q
