@@ -2,7 +2,7 @@ import React, { useMemo, useState, useDeferredValue } from 'react';
 import jobsData from '../data/jobs_data.json';
 import './Dashboard.css';
 import {
-  BarChart, Bar, PieChart, Pie, Cell, LineChart, Line,
+  BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, ///obtaing charts with the use of recharts package
   XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer
 } from 'recharts';
 import Checkbox from '@mui/material/Checkbox';
@@ -249,3 +249,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

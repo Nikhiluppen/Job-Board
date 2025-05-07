@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 const ApplyJob = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    FullName: '',
-    Email: '',
-    Phone: '',
+    fullName: '',
+    email: '',
+    phone: '',
     address: '',
     dob: '',
     education: '',
@@ -42,39 +42,45 @@ const ApplyJob = () => {
         <div style={styles.jobInfo}>
           <h1 style={styles.jobTitle}>📝 Job Application Form</h1>
           <p style={styles.jobMeta}>Fill in all the required details carefully.</p>
-          <button onClick={() => navigate('/jobs')} style={styles.backBtn}>← Back to Jobs</button>
+          <button onClick={() => navigate('/jobs')} style={styles.backBtn}>
+            ← Back to Jobs
+          </button>
         </div>
 
         <form onSubmit={handleSubmit} style={styles.form}>
-          <label style={styles.label}>Full Name:</label>
-          <input style={styles.input} type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
+          <FormField label="Full Name:" name="fullName" value={formData.fullName} onChange={handleChange} />
+          <FormField label="Email Address:" type="email" name="email" value={formData.email} onChange={handleChange} />
+          <FormField label="Phone Number:" type="tel" name="phone" value={formData.phone} onChange={handleChange} />
+          <FormField label="Address:" name="address" value={formData.address} onChange={handleChange} />
+          <FormField label="Date of Birth:" type="date" name="dob" value={formData.dob} onChange={handleChange} />
+          <FormField label="Education Qualification:" name="education" value={formData.education} onChange={handleChange} />
+          <FormField label="Position Applied For:" name="position" value={formData.position} onChange={handleChange} />
 
-          <label style={styles.label}>Email Address:</label>
-          <input style={styles.input} type="email" name="email" value={formData.email} onChange={handleChange} required />
+          <FormTextArea
+            label="Previous Experience:"
+            name="experience"
+            rows={3}
+            value={formData.experience}
+            onChange={handleChange}
+          />
 
-          <label style={styles.label}>Phone Number:</label>
-          <input style={styles.input} type="tel" name="phone" value={formData.phone} onChange={handleChange} required />
-
-          <label style={styles.label}>Address:</label>
-          <input style={styles.input} type="text" name="address" value={formData.address} onChange={handleChange} required />
-
-          <label style={styles.label}>Date of Birth:</label>
-          <input style={styles.input} type="date" name="dob" value={formData.dob} onChange={handleChange} required />
-
-          <label style={styles.label}>Education Qualification:</label>
-          <input style={styles.input} type="text" name="education" value={formData.education} onChange={handleChange} required />
-
-          <label style={styles.label}>Position Applied For:</label>
-          <input style={styles.input} type="text" name="position" value={formData.position} onChange={handleChange} required />
-
-          <label style={styles.label}>Previous Experience:</label>
-          <textarea style={styles.textarea} name="experience" value={formData.experience} onChange={handleChange} rows="3" required></textarea>
-
-          <label style={styles.label}>Reference (Name & Contact):</label>
-          <textarea style={styles.textarea} name="reference" value={formData.reference} onChange={handleChange} rows="2" required></textarea>
+          <FormTextArea
+            label="Reference (Name & Contact):"
+            name="reference"
+            rows={2}
+            value={formData.reference}
+            onChange={handleChange}
+          />
 
           <label style={styles.label}>Upload Resume:</label>
-          <input style={styles.input} type="file" name="resume" accept=".pdf,.doc,.docx" onChange={handleChange} required />
+          <input
+            style={styles.input}
+            type="file"
+            name="resume"
+            accept=".pdf,.doc,.docx"
+            onChange={handleChange}
+            required
+          />
 
           <button type="submit" style={styles.submitBtn}>Submit Application</button>
         </form>
@@ -82,6 +88,34 @@ const ApplyJob = () => {
     </div>
   );
 };
+
+const FormField = ({ label, name, type = 'text', value, onChange }) => (
+  <>
+    <label style={styles.label}>{label}</label>
+    <input
+      style={styles.input}
+      type={type}
+      name={name}
+      value={value}
+      onChange={onChange}
+      required
+    />
+  </>
+);
+
+const FormTextArea = ({ label, name, value, onChange, rows = 3 }) => (
+  <>
+    <label style={styles.label}>{label}</label>
+    <textarea
+      style={styles.textarea}
+      name={name}
+      value={value}
+      onChange={onChange}
+      rows={rows}
+      required
+    />
+  </>
+);
 
 const styles = {
   pageWrapper: {
@@ -101,11 +135,7 @@ const styles = {
     margin: 'auto',
     background: '#fff',
     borderRadius: '10px',
-    boxShadow: '0 4px 15px rgba(0,0,0,0.05)'
-  },
-  jobInfo: {
-    textAlign: 'center',
-    marginBottom: '30px',
+    boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
   },
   jobInfo: {
     textAlign: 'center',
@@ -132,11 +162,11 @@ const styles = {
   form: {
     display: 'flex',
     flexDirection: 'column',
-    gap: '15px'
+    gap: '15px',
   },
   label: {
     fontWeight: 'bold',
-    color: '#444'
+    color: '#444',
   },
   input: {
     padding: '10px',
@@ -158,8 +188,8 @@ const styles = {
     fontSize: '16px',
     border: 'none',
     cursor: 'pointer',
-    marginTop: '10px'
-  }
+    marginTop: '10px',
+  },
 };
 
 export default ApplyJob;

@@ -20,12 +20,7 @@ const testimonials = [
     image: user1,
     text: "This platform helped me land my dream job faster than I imagined!"
   },
-  {
-    name: "Nikhil",
-    image: user1,
-    text: "This platform helped me land my dream job faster than I imagined!"
-  },
-  {
+    {
     name: "Sathwika",
     image: user2,
     text: "The skill-based matching was a game changer for my job hunt!"
@@ -33,7 +28,7 @@ const testimonials = [
   {
     name: "SaiTeja",
     image: user2,
-    text: "The skill-based matching was a game changer for my job hunt!"
+    text: "The skill-based job matching was a really helped me which eventually landed me in my dream job!"
   },
   {
     name: "Rachana Balasani",
@@ -203,7 +198,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* {/* Create Profile Form */} */
+      {/* {/* Create Profile Form */}
       <section className="create-profile">
         <h2>Create Your Profile</h2>
         <p>Tell us your skills and get instant job matches.</p>
