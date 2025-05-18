@@ -42,7 +42,10 @@ const ApplyPage = () => {
   const job = jobs[id];  // Find the job based on the ID
 
   return (
-    <div className="apply-page">
+   
+   
+
+     <div className="apply-page">
       <h2>Apply for {job.title}</h2>
       <p><strong>Skills Required:</strong> {job.skills.join(", ")}</p>
       <p><strong>Location:</strong> {job.location}</p>
