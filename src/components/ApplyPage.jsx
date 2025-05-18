@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 const ApplyPage = () => {
   const { id } = useParams();  // Get the job index from the URL parameter
 
-  // Job Listings Data (same as in HomePage, could be fetched from backend)
+  // Job Listings Data (same as in HodadmePage, could be fetched from backend)
   const jobs = [
     {
       title: "Software Engineer",

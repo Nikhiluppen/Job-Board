@@ -87,7 +87,7 @@ const HomePage = () => {
         <p>&copy; 2025 Job Board. All rights reserved.</p>
       </footer>
 
-      {/* ✅ Embedded styles for layout */}
+      {/* ✅ Embedded s qdqdtyles for layout */}
       <style>{`
         .home-container {
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
