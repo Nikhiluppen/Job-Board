@@ -23,3 +23,12 @@ const JobList = ({ jobs }) => {
 };
 
 export default JobList;
+ <div className="apply-page">
+      <h2>Apply for {job.title}</h2>
+      <p><strong>Skills Required:</strong> {job.skills.join(", ")}</p>
+      <p><strong>Location:</strong> {job.location}</p>
+      <p><strong>Description:</strong> {job.description}</p>
+      
+      {/* Application form or button */}
+      <button>Submit Application</button>
+    </div>
